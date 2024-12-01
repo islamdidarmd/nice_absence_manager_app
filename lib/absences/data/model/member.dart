@@ -17,4 +17,7 @@ class Member with MemberMappable {
   final String image;
   final String name;
   final int userId;
+
+  static const fromMap = MemberMapper.fromMap;
+  static const fromJson = MemberMapper.fromJson;
 }

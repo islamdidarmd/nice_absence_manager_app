@@ -31,4 +31,7 @@ class Absence with AbsenceMappable {
   final DateTime startDate;
   final String type;
   final int userId;
+
+  static const fromMap = AbsenceMapper.fromMap;
+  static const fromJson = AbsenceMapper.fromJson;
 }
