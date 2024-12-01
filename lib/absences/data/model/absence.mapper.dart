@@ -26,7 +26,7 @@ class AbsenceMapper extends ClassMapperBase<Absence> {
   static String _$admitterNote(Absence v) => v.admitterNote;
   static const Field<Absence, String> _f$admitterNote =
       Field('admitterNote', _$admitterNote);
-  static DateTime _$confirmedAt(Absence v) => v.confirmedAt;
+  static DateTime? _$confirmedAt(Absence v) => v.confirmedAt;
   static const Field<Absence, DateTime> _f$confirmedAt =
       Field('confirmedAt', _$confirmedAt);
   static DateTime _$createdAt(Absence v) => v.createdAt;
@@ -162,7 +162,7 @@ class _AbsenceCopyWithImpl<$R, $Out>
   $R call(
           {Object? admitterId = $none,
           String? admitterNote,
-          DateTime? confirmedAt,
+          Object? confirmedAt = $none,
           DateTime? createdAt,
           int? crewId,
           DateTime? endDate,
@@ -175,7 +175,7 @@ class _AbsenceCopyWithImpl<$R, $Out>
       $apply(FieldCopyWithData({
         if (admitterId != $none) #admitterId: admitterId,
         if (admitterNote != null) #admitterNote: admitterNote,
-        if (confirmedAt != null) #confirmedAt: confirmedAt,
+        if (confirmedAt != $none) #confirmedAt: confirmedAt,
         if (createdAt != null) #createdAt: createdAt,
         if (crewId != null) #crewId: crewId,
         if (endDate != null) #endDate: endDate,

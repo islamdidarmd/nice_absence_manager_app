@@ -21,7 +21,7 @@ class Absence with AbsenceMappable {
 
   final int? admitterId;
   final String admitterNote;
-  final DateTime confirmedAt;
+  final DateTime? confirmedAt;
   final DateTime createdAt;
   final int crewId;
   final DateTime endDate;
