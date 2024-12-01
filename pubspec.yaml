@@ -1,0 +1,22 @@
+name: nice_absence_tracker_app
+description: "A Flutter for nicely displaying absence information."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.7
+
+dev_dependencies:
+  bloc_test: ^9.1.7
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^6.0.0
+flutter:
+  uses-material-design: true
