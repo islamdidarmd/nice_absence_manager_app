@@ -34,7 +34,7 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
     }
   }
 
-  void filterAbsenceListBy(TypeFilter newFilter) {
+  void filterAbsenceListByType(TypeFilter newFilter) {
     if (_typeFilter == newFilter) {
       return;
     }
@@ -59,6 +59,24 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
           );
     }
     emit(AbsenceListLoadedState(_typeFilter, _filtered));
+  }
+
+  void filterAbsenceListByDate(DateTime start, DateTime end) {
+    _typeFilter = TypeFilter.all;
+    _filtered
+      ..clear()
+      ..addAll(
+        _allAbsence.where(
+            (e) => e.startDate.isAfter(start) && e.endDate.isBefore(end)),
+      );
+    emit(
+      AbsenceListLoadedState(
+        _typeFilter,
+        _filtered,
+        startDate: start,
+        endDate: end,
+      ),
+    );
   }
 
   Future<List<AbsenceListItemModel>> _fetchModels() async {

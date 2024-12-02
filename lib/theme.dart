@@ -6,6 +6,7 @@ final _colorSchemeDark =
     ColorScheme.fromSeed(brightness: Brightness.dark, seedColor: Colors.teal);
 
 const _chipTheme = ChipThemeData(
+  padding: EdgeInsets.zero,
   shape: StadiumBorder(side: BorderSide(width: 0, color: Colors.transparent)),
 );
 

@@ -1,11 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/filter_dialog.dart';
 
 class ListTitleView extends StatelessWidget {
-  const ListTitleView(this.total, this.filter, {super.key});
+  const ListTitleView({
+    required this.total,
+    required this.typeFilter,
+    required this.dateFilter,
+    super.key,
+  });
 
   final int total;
-  final String filter;
+  final String typeFilter;
+  final String dateFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +24,14 @@ class ListTitleView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _TotalView(total: total, filter: filter),
+          _TotalView(
+            total: total,
+            typeFilter: typeFilter,
+            dateFilter: dateFilter,
+          ),
           const Spacer(),
-          const _TypeFilterView(),
-          const _DatePickerFilterView(),
+          const _TypeFilterButton(),
+          const _DatePickerFilterButton(),
         ],
       ),
     );
@@ -26,13 +40,15 @@ class ListTitleView extends StatelessWidget {
 
 class _TotalView extends StatelessWidget {
   const _TotalView({
-    super.key,
     required this.total,
-    required this.filter,
+    required this.typeFilter,
+    required this.dateFilter,
+    super.key,
   });
 
   final int total;
-  final String filter;
+  final String typeFilter;
+  final String dateFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +60,11 @@ class _TotalView extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         Text(
-          'Filter: $filter',
+          typeFilter,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        Text(
+          dateFilter,
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ],
@@ -52,8 +72,8 @@ class _TotalView extends StatelessWidget {
   }
 }
 
-class _TypeFilterView extends StatelessWidget {
-  const _TypeFilterView({super.key});
+class _TypeFilterButton extends StatelessWidget {
+  const _TypeFilterButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +89,12 @@ class _TypeFilterView extends StatelessWidget {
   }
 }
 
-class _DatePickerFilterView extends StatelessWidget {
-  const _DatePickerFilterView({super.key});
+class _DatePickerFilterButton extends StatelessWidget {
+  const _DatePickerFilterButton({super.key});
 
-  Future<DateTime?> _selectDate(BuildContext context) {
+  Future<DateTime?> _selectDate(BuildContext context, String hint) {
     return showDatePicker(
+      helpText: hint,
       context: context,
       firstDate: DateTime(2010),
       lastDate: DateTime.now(),
@@ -84,11 +105,24 @@ class _DatePickerFilterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () async {
-        final startDate = await _selectDate(context);
-        final endDate = await _selectDate(context);
+      onPressed: () {
+        unawaited(_startDatePicker(context));
       },
-      icon: const Icon(Icons.filter_alt),
+      icon: const Icon(Icons.date_range),
     );
+  }
+
+  Future<void> _startDatePicker(BuildContext context) async {
+    final startDate = await _selectDate(context, 'Select Starting date');
+    if (startDate == null || !context.mounted) {
+      return;
+    }
+    final endDate = await _selectDate(context, 'Select Ending date');
+    if (endDate == null || !context.mounted) {
+      return;
+    }
+    context
+        .read<AbsenceListCubit>()
+        .filterAbsenceListByDate(startDate, endDate);
   }
 }

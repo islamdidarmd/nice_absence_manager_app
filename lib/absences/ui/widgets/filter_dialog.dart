@@ -41,7 +41,7 @@ class _DialogBody extends StatelessWidget {
             value: TypeFilter.all,
             selected: selectedOption,
             onSelected: (value) {
-              context.read<AbsenceListCubit>().filterAbsenceListBy(value);
+              context.read<AbsenceListCubit>().filterAbsenceListByType(value);
               Navigator.of(context).pop();
             },
           ),
@@ -50,7 +50,7 @@ class _DialogBody extends StatelessWidget {
             value: TypeFilter.sickness,
             selected: selectedOption,
             onSelected: (value) {
-              context.read<AbsenceListCubit>().filterAbsenceListBy(value);
+              context.read<AbsenceListCubit>().filterAbsenceListByType(value);
               Navigator.of(context).pop();
             },
           ),
@@ -59,7 +59,7 @@ class _DialogBody extends StatelessWidget {
             value: TypeFilter.vacation,
             selected: selectedOption,
             onSelected: (value) {
-              context.read<AbsenceListCubit>().filterAbsenceListBy(value);
+              context.read<AbsenceListCubit>().filterAbsenceListByType(value);
               Navigator.of(context).pop();
             },
           ),

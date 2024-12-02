@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nice_absence_manager_app/absences/ui/absence_list.dart';
+import 'package:nice_absence_manager_app/absences/ui/absence_list_screen.dart';
 import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
 import 'package:nice_absence_manager_app/di/injection.dart';
 import 'package:nice_absence_manager_app/theme.dart';

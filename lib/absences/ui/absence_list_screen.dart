@@ -21,7 +21,11 @@ class AbsenceListScreen extends StatelessWidget {
           } else if (state is AbsenceListErrorState) {
             return const ErrorView();
           } else if (state is AbsenceListLoadedState) {
-            return AbsenceListView(state.absenceList, formatFilterByType(state.selectedFilter));
+            return AbsenceListView(
+              list: state.absenceList,
+              typeFilter: formatFilterByType(state.selectedFilter),
+              dateFilter: formatDateRange(state.startDate, state.endDate),
+            );
           }
           return const EmptyView();
         },

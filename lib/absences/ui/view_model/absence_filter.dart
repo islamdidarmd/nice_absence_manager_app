@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 enum TypeFilter { all, sickness, vacation }
 
 String formatFilterByType(TypeFilter typeFilter) {
@@ -8,3 +10,14 @@ String formatFilterByType(TypeFilter typeFilter) {
   };
 }
 
+String formatDateTime(DateTime time) {
+  final formatter = DateFormat('MMM dd, yyyy');
+  return formatter.format(time);
+}
+
+String formatDateRange(DateTime? start, DateTime? end) {
+  if (start == null || end == null) {
+    return '';
+  }
+  return '${formatDateTime(start)} - ${formatDateTime(end)}';
+}

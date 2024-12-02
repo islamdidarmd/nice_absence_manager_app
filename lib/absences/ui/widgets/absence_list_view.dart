@@ -1,14 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/list_title_view.dart';
 
 class AbsenceListView extends StatelessWidget {
-  const AbsenceListView(this.list, this.filterName, {super.key});
+  const AbsenceListView({
+    required this.list,
+    required this.typeFilter,
+    required this.dateFilter,
+    super.key,
+  });
 
   final List<AbsenceListItemModel> list;
-  final String filterName;
+  final String typeFilter;
+  final String dateFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +23,11 @@ class AbsenceListView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ListTitleView(itemCount, filterName),
+        ListTitleView(
+          total: itemCount,
+          typeFilter: typeFilter,
+          dateFilter: dateFilter,
+        ),
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) => _AbsenceListItemView(list[index]),
@@ -43,6 +53,7 @@ class _AbsenceListItemView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _TitleView(absence),
+            _DateView(absence),
             _InfoView(absence),
           ],
         ),
@@ -58,10 +69,7 @@ class _TitleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateRange =
-        '${_formatDateTime(absence.startDate)} - ${_formatDateTime(absence.endDate)}';
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CircleAvatar(
           foregroundImage: CachedNetworkImageProvider(absence.picture),
@@ -69,20 +77,24 @@ class _TitleView extends StatelessWidget {
         const SizedBox(width: 12),
         Text(
           absence.memberName,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const Spacer(),
-        Chip(
-          label: Text(dateRange),
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
       ],
     );
   }
+}
 
-  String _formatDateTime(DateTime time) {
-    final formatter = DateFormat('MMM dd, yyyy');
-    return formatter.format(time);
+class _DateView extends StatelessWidget {
+  const _DateView(this.absence, {super.key});
+
+  final AbsenceListItemModel absence;
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      label: Text(formatDateRange(absence.startDate, absence.endDate)),
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+    );
   }
 }
 
