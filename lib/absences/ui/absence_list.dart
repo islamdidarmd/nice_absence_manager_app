@@ -4,6 +4,7 @@ import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.da
 import 'package:nice_absence_manager_app/absences/ui/widgets/absence_list_view.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/error_view.dart';
+import 'package:nice_absence_manager_app/absences/ui/widgets/filter_button.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/loading_view.dart';
 import 'package:nice_absence_manager_app/di/injection.dart';
 
@@ -28,6 +29,7 @@ class AbsenceList extends StatelessWidget {
             return const EmptyView();
           },
         ),
+        floatingActionButton: const FilterButton(),
       ),
     );
   }
