@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
+import 'package:nice_absence_manager_app/absences/ui/widgets/list_title_view.dart';
 
 class AbsenceListView extends StatelessWidget {
   const AbsenceListView(this.list, this.filterName, {super.key});
@@ -15,42 +16,15 @@ class AbsenceListView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _TotalView(itemCount, filterName),
+        ListTitleView(itemCount, filterName),
         Expanded(
           child: ListView.separated(
             itemBuilder: (context, index) => _AbsenceListItemView(list[index]),
-            separatorBuilder: (context, index) => Divider(),
+            separatorBuilder: (context, index) => const Divider(),
             itemCount: itemCount,
           ),
         )
       ],
-    );
-  }
-}
-
-class _TotalView extends StatelessWidget {
-  const _TotalView(this.total, this.filter, {super.key});
-
-  final int total;
-  final String filter;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6, right: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Total Absence: $total',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            'Filter: $filter',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ],
-      ),
     );
   }
 }
