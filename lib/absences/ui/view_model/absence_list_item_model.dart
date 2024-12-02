@@ -15,6 +15,7 @@ enum AbsenceType {
 class AbsenceListItemModel {
   const AbsenceListItemModel({
     required this.userId,
+    required this.picture,
     required this.memberName,
     required this.type,
     required this.startDate,
@@ -39,6 +40,7 @@ class AbsenceListItemModel {
 
     return AbsenceListItemModel(
       userId: absence.userId,
+      picture: member.image,
       memberName: member.name,
       type: type,
       startDate: absence.startDate,
@@ -51,6 +53,7 @@ class AbsenceListItemModel {
   }
 
   final int userId;
+  final String picture;
   final String memberName;
   final AbsenceType type;
   final DateTime startDate;

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
@@ -18,9 +19,8 @@ class AbsenceListView extends StatelessWidget {
       children: [
         ListTitleView(itemCount, filterName),
         Expanded(
-          child: ListView.separated(
+          child: ListView.builder(
             itemBuilder: (context, index) => _AbsenceListItemView(list[index]),
-            separatorBuilder: (context, index) => const Divider(),
             itemCount: itemCount,
           ),
         )
@@ -36,35 +36,80 @@ class _AbsenceListItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Name: ${absence.memberName}',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          Wrap(
-            spacing: 8,
-            children: [
-              Chip(label: Text(_formatType(absence.type))),
-              Chip(label: Text(_formatStatus(absence.status))),
-            ],
-          ),
-          Chip(
-              label: Text(
-                  '${_formatDateTime(absence.startDate)} - ${_formatDateTime(absence.endDate)}')),
-          if (absence.memberNote.isNotEmpty) Text(absence.memberNote),
-          if (absence.admitterNote.isNotEmpty) Text(absence.admitterNote),
-        ],
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _TitleView(absence),
+            _InfoView(absence),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _TitleView extends StatelessWidget {
+  const _TitleView(this.absence, {super.key});
+
+  final AbsenceListItemModel absence;
+
+  @override
+  Widget build(BuildContext context) {
+    final dateRange =
+        '${_formatDateTime(absence.startDate)} - ${_formatDateTime(absence.endDate)}';
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CircleAvatar(
+          foregroundImage: CachedNetworkImageProvider(absence.picture),
+        ),
+        const SizedBox(width: 12),
+        Text(
+          absence.memberName,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const Spacer(),
+        Chip(
+          label: Text(dateRange),
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        ),
+      ],
     );
   }
 
   String _formatDateTime(DateTime time) {
     final formatter = DateFormat('MMM dd, yyyy');
     return formatter.format(time);
+  }
+}
+
+class _InfoView extends StatelessWidget {
+  const _InfoView(this.absence, {super.key});
+
+  final AbsenceListItemModel absence;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      children: [
+        Chip(
+          label: Text(_formatStatus(absence.status)),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        ),
+        Chip(
+          label: Text(_formatType(absence.type)),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        ),
+        if (absence.memberNote.isNotEmpty)
+          Chip(label: Text(absence.memberNote)),
+        if (absence.admitterNote.isNotEmpty)
+          Chip(label: Text(absence.admitterNote)),
+      ],
+    );
   }
 
   String _formatStatus(AbsenceStatus status) {
