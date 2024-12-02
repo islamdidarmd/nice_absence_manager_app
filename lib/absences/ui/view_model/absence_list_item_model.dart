@@ -1,10 +1,21 @@
 import 'package:nice_absence_manager_app/absences/data/model/absence.dart';
 import 'package:nice_absence_manager_app/absences/data/model/member.dart';
 
+enum AbsenceStatus {
+  requested,
+  rejected,
+  confirmed,
+}
+
+enum AbsenceType {
+  vacation,
+  sickness,
+}
+
 class AbsenceListItemModel {
   const AbsenceListItemModel({
     required this.userId,
-    required this.memeberName,
+    required this.memberName,
     required this.type,
     required this.startDate,
     required this.endDate,
@@ -15,17 +26,21 @@ class AbsenceListItemModel {
   });
 
   factory AbsenceListItemModel.from(Absence absence, Member member) {
-    var status = 'Requested';
+    var status = AbsenceStatus.requested;
     if (absence.rejectedAt != null) {
-      status = 'Rejected';
+      status = AbsenceStatus.rejected;
     } else if (absence.confirmedAt != null) {
-      status = 'Confirmed';
+      status = AbsenceStatus.confirmed;
+    }
+    var type = AbsenceType.vacation;
+    if (absence.type == 'sickness') {
+      type = AbsenceType.sickness;
     }
 
     return AbsenceListItemModel(
       userId: absence.userId,
-      memeberName: member.name,
-      type: absence.type,
+      memberName: member.name,
+      type: type,
       startDate: absence.startDate,
       endDate: absence.endDate,
       memberNote: absence.memberNote,
@@ -36,12 +51,12 @@ class AbsenceListItemModel {
   }
 
   final int userId;
-  final String memeberName;
-  final String type;
+  final String memberName;
+  final AbsenceType type;
   final DateTime startDate;
   final DateTime endDate;
   final String memberNote;
   final DateTime? rejectedAt;
   final String admitterNote;
-  final String status;
+  final AbsenceStatus status;
 }

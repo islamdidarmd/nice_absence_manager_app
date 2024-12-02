@@ -11,13 +11,13 @@ class AbsenceRepository {
 
   Future<List<Absence>> fetchAbsenceList() async {
     final allAbsent = await absenceApi.fetchAllAbsent();
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 1));
     return allAbsent.map((e) => Absence.fromMap(e)).toList(growable: false);
   }
 
   Future<List<Member>> fetchMemberList() async {
     final allMember = await absenceApi.fetchAllMember();
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 1));
     return allMember.map((e) => Member.fromMap(e)).toList(growable: false);
   }
 }

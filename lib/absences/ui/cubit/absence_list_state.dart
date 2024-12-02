@@ -1,10 +1,7 @@
 part of 'absence_list_cubit.dart';
 
-sealed class AbsenceListState extends Equatable {
+sealed class AbsenceListState {
   const AbsenceListState();
-
-  @override
-  List<Object?> get props => [];
 }
 
 final class AbsenceListInitialState extends AbsenceListState {}
@@ -16,10 +13,9 @@ final class AbsenceListErrorState extends AbsenceListState {}
 final class AbsenceListEmptyState extends AbsenceListState {}
 
 final class AbsenceListLoadedState extends AbsenceListState {
-  const AbsenceListLoadedState(this.absenceList);
+  const AbsenceListLoadedState(this.selectedFilter, this.absenceList);
+
+  final TypeFilter selectedFilter;
 
   final List<AbsenceListItemModel> absenceList;
-
-  @override
-  List<Object?> get props => [absenceList];
 }

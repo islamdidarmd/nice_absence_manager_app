@@ -1,104 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
+import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 
-class FilterDialog extends StatefulWidget {
+class FilterDialog extends StatelessWidget {
   const FilterDialog({super.key});
 
   @override
-  State<FilterDialog> createState() => _FilterDialogState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<AbsenceListCubit, AbsenceListState>(
+      buildWhen: (previous, current) => current is AbsenceListLoadedState,
+      builder: (context, state) {
+        if (state is AbsenceListLoadedState) {
+          final selectedOption = state.selectedFilter;
+          return _DialogBody(selectedOption: selectedOption);
+        }
+        return const SizedBox();
+      },
+    );
+  }
 }
 
-class _FilterDialogState extends State<FilterDialog> {
-  String selectedOption = 'All';
+class _DialogBody extends StatelessWidget {
+  const _DialogBody({
+    required this.selectedOption,
+    super.key,
+  });
+
+  final TypeFilter selectedOption;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Filter by'),
+      title: const Text('Filter by Type'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           _Choice(
-            value: 'All',
+            text: 'All',
+            value: TypeFilter.all,
             selected: selectedOption,
             onSelected: (value) {
-              selectedOption = value;
-              setState(() {
-                selectedOption = value;
-              });
+              context.read<AbsenceListCubit>().filterAbsenceListBy(value);
+              Navigator.of(context).pop();
             },
           ),
           _Choice(
-            value: 'Requested',
+            text: 'Sickness',
+            value: TypeFilter.sickness,
             selected: selectedOption,
             onSelected: (value) {
-              selectedOption = value;
-              setState(() {
-                selectedOption = value;
-              });
+              context.read<AbsenceListCubit>().filterAbsenceListBy(value);
+              Navigator.of(context).pop();
             },
           ),
           _Choice(
-            value: 'Confirmed',
+            text: 'Vacation',
+            value: TypeFilter.vacation,
             selected: selectedOption,
             onSelected: (value) {
-              selectedOption = value;
-              setState(() {
-                selectedOption = value;
-              });
-            },
-          ),
-          _Choice(
-            value: 'Rejected',
-            selected: selectedOption,
-            onSelected: (value) {
-              selectedOption = value;
-              setState(() {
-                selectedOption = value;
-              });
+              context.read<AbsenceListCubit>().filterAbsenceListBy(value);
+              Navigator.of(context).pop();
             },
           ),
         ],
       ),
-      actions: const [_OkButton()],
     );
   }
 }
 
 class _Choice extends StatelessWidget {
   const _Choice({
+    required this.text,
     required this.value,
     required this.selected,
     required this.onSelected,
     super.key,
   });
 
-  final String value;
-  final String selected;
-  final void Function(String onSelected) onSelected;
+  final String text;
+  final TypeFilter value;
+  final TypeFilter selected;
+  final void Function(TypeFilter onSelected) onSelected;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(value),
-      leading: Radio<String>(
+      title: Text(text),
+      leading: Radio<TypeFilter>(
         value: value,
         groupValue: selected,
         onChanged: (value) => onSelected(value!),
       ),
-    );
-  }
-}
-
-class _OkButton extends StatelessWidget {
-  const _OkButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      child: const Text('OK'),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
     );
   }
 }
