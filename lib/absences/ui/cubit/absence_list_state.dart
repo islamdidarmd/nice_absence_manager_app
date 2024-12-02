@@ -18,7 +18,7 @@ final class AbsenceListEmptyState extends AbsenceListState {}
 final class AbsenceListLoadedState extends AbsenceListState {
   const AbsenceListLoadedState(this.absenceList);
 
-  final List<Absence> absenceList;
+  final List<AbsenceListItemModel> absenceList;
 
   @override
   List<Object?> get props => [absenceList];
