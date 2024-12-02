@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:nice_absence_tracker_app/gen/assets.gen.dart';
 
 typedef JsonMap = Map<String, dynamic>;
@@ -17,7 +17,7 @@ class AbsenceApi {
   }
 
   Future<List<dynamic>> _readJsonFile(String path) async {
-    final content = await File(path).readAsString();
+    final content = await rootBundle.loadString(path);
     final data = jsonDecode(content) as JsonMap;
     return data['payload'] as List<dynamic>;
   }

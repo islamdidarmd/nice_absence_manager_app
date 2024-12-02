@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -8,6 +9,7 @@ import 'absence_repository_test.mocks.dart';
 
 @GenerateMocks([AbsenceApi])
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   late AbsenceRepository absenceRepository;
   late MockAbsenceApi api;
   late AbsenceApi realApi;

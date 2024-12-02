@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nice_absence_tracker_app/absences/data/absence_api.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   final api = AbsenceApi();
 
   group('Absence api returning Mock response', () {
