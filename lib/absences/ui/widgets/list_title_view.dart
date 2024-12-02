@@ -16,15 +16,8 @@ class ListTitleView extends StatelessWidget {
         children: [
           _TotalView(total: total, filter: filter),
           const Spacer(),
-          IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => FilterDialog(),
-                );
-              },
-              icon: const Icon(Icons.filter_list)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.filter_alt))
+          const _TypeFilterView(),
+          const _DatePickerFilterView(),
         ],
       ),
     );
@@ -55,6 +48,47 @@ class _TotalView extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ],
+    );
+  }
+}
+
+class _TypeFilterView extends StatelessWidget {
+  const _TypeFilterView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        showDialog<void>(
+          context: context,
+          builder: (context) => const FilterDialog(),
+        );
+      },
+      icon: const Icon(Icons.filter_list),
+    );
+  }
+}
+
+class _DatePickerFilterView extends StatelessWidget {
+  const _DatePickerFilterView({super.key});
+
+  Future<DateTime?> _selectDate(BuildContext context) {
+    return showDatePicker(
+      context: context,
+      firstDate: DateTime(2010),
+      lastDate: DateTime.now(),
+      initialDatePickerMode: DatePickerMode.year,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () async {
+        final startDate = await _selectDate(context);
+        final endDate = await _selectDate(context);
+      },
+      icon: const Icon(Icons.filter_alt),
     );
   }
 }
