@@ -1,4 +1,4 @@
-package com.example.nice_absence_tracker_app
+package com.example.nice_absence_manager_app
 
 import io.flutter.embedding.android.FlutterActivity
 

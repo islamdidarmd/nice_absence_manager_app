@@ -1,7 +1,9 @@
-import 'package:nice_absence_tracker_app/absences/data/absence_api.dart';
-import 'package:nice_absence_tracker_app/absences/data/model/absence.dart';
-import 'package:nice_absence_tracker_app/absences/data/model/member.dart';
+import 'package:injectable/injectable.dart';
+import 'package:nice_absence_manager_app/absences/data/absence_api.dart';
+import 'package:nice_absence_manager_app/absences/data/model/absence.dart';
+import 'package:nice_absence_manager_app/absences/data/model/member.dart';
 
+@injectable
 class AbsenceRepository {
   AbsenceRepository(this.absenceApi);
 

@@ -1,4 +1,4 @@
-name: nice_absence_tracker_app
+name: nice_absence_manager_app
 description: "A Flutter for nicely displaying absence information."
 publish_to: 'none'
 version: 1.0.0+1
@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
+  get_it: ^8.0.2
+  injectable: ^2.5.0
 
 dev_dependencies:
   bloc_test: ^9.1.7
@@ -20,6 +22,7 @@ dev_dependencies:
   flutter_gen_runner: ^5.8.0
   flutter_test:
     sdk: flutter
+  injectable_generator: ^2.5.0
   mockito: ^5.4.4
   very_good_analysis: ^6.0.0
 

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:nice_absence_tracker_app/gen/assets.gen.dart';
+import 'package:injectable/injectable.dart';
+import 'package:nice_absence_manager_app/gen/assets.gen.dart';
 
 typedef JsonMap = Map<String, dynamic>;
 
+@injectable
 class AbsenceApi {
   Future<List<JsonMap>> fetchAllMember() async {
     final response = await _readJsonFile(Assets.mock.members);
