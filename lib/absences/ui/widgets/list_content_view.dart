@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
 
-class ListContentView extends StatelessWidget {
+class ListContentView extends StatefulWidget {
   const ListContentView({
     required this.list,
     required this.itemCount,
@@ -15,14 +17,42 @@ class ListContentView extends StatelessWidget {
   final int itemCount;
 
   @override
+  State<ListContentView> createState() => _ListContentViewState();
+}
+
+class _ListContentViewState extends State<ListContentView> {
+  final _scrollController = ScrollController();
+  final _preloadPixels = 200;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_listenToScrollChange);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_listenToScrollChange);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (itemCount == 0) {
+    if (widget.itemCount == 0) {
       return const EmptyView();
     }
     return ListView.builder(
-      itemBuilder: (context, index) => _AbsenceListItemView(list[index]),
-      itemCount: itemCount,
+      controller: _scrollController,
+      itemBuilder: (context, index) => _AbsenceListItemView(widget.list[index]),
+      itemCount: widget.itemCount,
     );
+  }
+
+  void _listenToScrollChange() {
+    if (_scrollController.position.pixels >
+        _scrollController.position.maxScrollExtent - _preloadPixels) {
+      context.read<AbsenceListCubit>().loadMore();
+    }
   }
 }
 

@@ -8,30 +8,30 @@ import 'package:nice_absence_manager_app/absences/ui/widgets/list_title_view.dar
 
 class AbsenceListView extends StatelessWidget {
   const AbsenceListView({
+    required this.totalItemCoint,
     required this.list,
     required this.typeFilter,
     required this.dateFilter,
     super.key,
   });
 
+  final int totalItemCoint;
   final List<AbsenceListItemModel> list;
   final String typeFilter;
   final String dateFilter;
 
   @override
   Widget build(BuildContext context) {
-    final itemCount = list.length;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTitleView(
-          total: itemCount,
+          total: totalItemCoint,
           typeFilter: typeFilter,
           dateFilter: dateFilter,
         ),
         Expanded(
-          child: ListContentView(list: list, itemCount: itemCount),
+          child: ListContentView(list: list, itemCount: list.length),
         )
       ],
     );

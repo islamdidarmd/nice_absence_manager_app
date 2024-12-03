@@ -11,9 +11,14 @@ final class AbsenceListLoadingState extends AbsenceListState {}
 final class AbsenceListErrorState extends AbsenceListState {}
 
 final class AbsenceListLoadedState extends AbsenceListState {
-  const AbsenceListLoadedState(this.selectedFilter, this.absenceList,
-      {this.dateRange});
+  const AbsenceListLoadedState({
+    required this.selectedFilter,
+    required this.absenceList,
+    required this.totalItemCount,
+    this.dateRange,
+  });
 
+  final int totalItemCount;
   final TypeFilter selectedFilter;
   final DateTimeRange? dateRange;
 

@@ -22,6 +22,7 @@ class AbsenceListScreen extends StatelessWidget {
             return const ErrorView();
           } else if (state is AbsenceListLoadedState) {
             return AbsenceListView(
+              totalItemCoint: state.totalItemCount,
               list: state.absenceList,
               typeFilter: formatFilterByType(state.selectedFilter),
               dateFilter: formatDateRange(state.dateRange),

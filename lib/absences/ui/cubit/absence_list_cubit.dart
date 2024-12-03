@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nice_absence_manager_app/absences/data/absence_repository.dart';
 import 'package:nice_absence_manager_app/absences/data/model/absence.dart';
+import 'package:nice_absence_manager_app/absences/data/model/member.dart';
+import 'package:nice_absence_manager_app/absences/data/model/paginated_response.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
 
@@ -12,75 +14,110 @@ part 'absence_list_state.dart';
 @injectable
 class AbsenceListCubit extends Cubit<AbsenceListState> {
   AbsenceListCubit(this.absenceRepository) : super(AbsenceListInitialState());
-
   final AbsenceRepository absenceRepository;
-  final List<AbsenceListItemModel> _allAbsence = [];
-  final List<AbsenceListItemModel> _filtered = [];
 
-  var _typeFilter = TypeFilter.all;
+  final List<Member> _memberList = [];
+  final List<AbsenceListItemModel> _paginatedAbsence = [];
+  PaginatedResponse<Absence>? _paginatedResponse;
+
+  TypeFilter _typeFilter = TypeFilter.all;
+  DateTimeRange? _dateRangeFilter;
+  bool _isLoadingNext = false;
 
   Future<void> loadAbsenceList() async {
     emit(AbsenceListLoadingState());
     try {
-      _allAbsence
+      final memberList = await absenceRepository.fetchMemberList();
+      _memberList
         ..clear()
-        ..addAll(await _fetchModels());
-      emit(AbsenceListLoadedState(_typeFilter, _allAbsence));
+        ..addAll(memberList);
+      await _fetchNextPage();
+      emit(_createListLoadedState());
     } catch (e) {
       emit(AbsenceListErrorState());
     }
   }
 
-  void filterAbsenceListByType(TypeFilter newFilter) {
-    if (_typeFilter == newFilter) {
+  Future<void> loadMore() async {
+    if (_isLoadingNext || _paginatedResponse?.hasMore == false) {
       return;
     }
 
-    _typeFilter = newFilter;
-    switch (_typeFilter) {
-      case TypeFilter.all:
-        _filtered
-          ..clear()
-          ..addAll(_allAbsence);
-      case TypeFilter.sickness:
-        _filtered
-          ..clear()
-          ..addAll(
-            _allAbsence.where((e) => e.type == AbsenceType.sickness),
-          );
-      case TypeFilter.vacation:
-        _filtered
-          ..clear()
-          ..addAll(
-            _allAbsence.where((e) => e.type == AbsenceType.vacation),
-          );
+    try {
+      _isLoadingNext = true;
+      await _fetchNextPage();
+      emit(_createListLoadedState());
+      _isLoadingNext = false;
+    } catch (e) {
+      //todo: add error state
     }
-    emit(AbsenceListLoadedState(_typeFilter, _filtered));
   }
 
-  void filterAbsenceListByDate(DateTimeRange range) {
-    _typeFilter = TypeFilter.all;
-    _filtered
-      ..clear()
-      ..addAll(
-        _allAbsence.where((e) =>
-            e.startDate.isAfter(range.start) && e.endDate.isBefore(range.end)),
-      );
-    emit(
-      AbsenceListLoadedState(
-        _typeFilter,
-        _filtered,
-        dateRange: range,
-      ),
+  Future<void> filterAbsenceListByType(TypeFilter newFilter) async {
+    if (_typeFilter == newFilter) {
+      return;
+    }
+    _clearCurrentList();
+    _typeFilter = newFilter;
+
+    try {
+      await _fetchNextPage();
+      emit(_createListLoadedState());
+    } catch (e) {
+      //todo: add error state
+    }
+  }
+
+  Future<void> filterAbsenceListByDate(DateTimeRange range) async {
+    _clearCurrentList();
+    _dateRangeFilter = range;
+
+    try {
+      await _fetchNextPage();
+      emit(_createListLoadedState());
+    } catch (e) {
+      //todo: add error state
+    }
+  }
+
+  Future<void> _fetchNextPage() async {
+    final currentPage = _paginatedResponse?.currentPage ?? -1;
+    _paginatedResponse = await absenceRepository.fetchAbsencesListByFilter(
+      type: _getAbsenceTypeFromFilter(),
+      range: _dateRangeFilter,
+      page: currentPage + 1,
+    );
+    final mappedList = await _mapMemberWithId(_paginatedResponse!.items);
+    _paginatedAbsence.addAll(mappedList);
+  }
+
+  String? _getAbsenceTypeFromFilter() {
+    return switch (_typeFilter) {
+      TypeFilter.all => null,
+      TypeFilter.sickness => 'sickness',
+      TypeFilter.vacation => 'vacation',
+    };
+  }
+
+  void _clearCurrentList() {
+    _paginatedAbsence.clear();
+    _paginatedResponse = null;
+  }
+
+  AbsenceListLoadedState _createListLoadedState() {
+    return AbsenceListLoadedState(
+      selectedFilter: _typeFilter,
+      absenceList: _paginatedAbsence,
+      totalItemCount: _paginatedResponse!.totalItemCount,
+      dateRange: _dateRangeFilter,
     );
   }
 
-  Future<List<AbsenceListItemModel>> _fetchModels() async {
-    final absenceList = await absenceRepository.fetchAbsenceList();
-    final memberList = await absenceRepository.fetchMemberList();
-
+  Future<List<AbsenceListItemModel>> _mapMemberWithId(
+    List<Absence> absenceList,
+  ) async {
     return absenceList.map((absence) {
-      final member = memberList.firstWhere((e) => e.userId == absence.userId);
+      final member = _memberList.firstWhere((e) => e.userId == absence.userId);
       return AbsenceListItemModel.from(absence, member);
     }).toList();
   }
