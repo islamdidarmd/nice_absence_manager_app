@@ -92,21 +92,26 @@ class _InfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Chip(
-          label: Text(_formatStatus(absence.status)),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        ),
-        Chip(
-          label: Text(_formatType(absence.type)),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        Row(
+          children: [
+            Chip(
+              label: Text(_formatStatus(absence.status)),
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            ),
+            const SizedBox(width: 8),
+            Chip(
+              label: Text(_formatType(absence.type)),
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            ),
+          ],
         ),
         if (absence.memberNote.isNotEmpty)
-          Chip(label: Text(absence.memberNote)),
+          Text('Member Note: ${absence.memberNote}'),
         if (absence.admitterNote.isNotEmpty)
-          Chip(label: Text(absence.admitterNote)),
+          Text('Admitter Note: ${absence.admitterNote}'),
       ],
     );
   }
