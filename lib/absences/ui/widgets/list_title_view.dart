@@ -19,20 +19,22 @@ class ListTitleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6, right: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _TotalView(
-            total: total,
-            typeFilter: typeFilter,
-            dateFilter: dateFilter,
-          ),
-          const Spacer(),
-          const _TypeFilterButton(),
-          const _DatePickerFilterButton(),
-        ],
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _TotalView(
+              total: total,
+              typeFilter: typeFilter,
+              dateFilter: dateFilter,
+            ),
+            const Spacer(),
+            const _TypeFilterButton(),
+            const _DatePickerFilterButton(),
+          ],
+        ),
       ),
     );
   }
@@ -59,14 +61,16 @@ class _TotalView extends StatelessWidget {
           'Total Absence: $total',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        Text(
-          typeFilter,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        Text(
-          dateFilter,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        if (typeFilter.isNotEmpty)
+          Text(
+            typeFilter,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        if (dateFilter.isNotEmpty)
+          Text(
+            dateFilter,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
       ],
     );
   }
@@ -95,7 +99,9 @@ class _DatePickerFilterButton extends StatelessWidget {
   Future<DateTime?> _selectDate(BuildContext context, String hint) {
     return showDatePicker(
       helpText: hint,
+      confirmText: 'Select',
       context: context,
+      barrierDismissible: false,
       firstDate: DateTime(2010),
       lastDate: DateTime.now(),
       initialDatePickerMode: DatePickerMode.year,
