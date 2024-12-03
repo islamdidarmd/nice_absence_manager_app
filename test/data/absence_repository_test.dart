@@ -14,6 +14,9 @@ void main() {
   late MockAbsenceApi api;
   late AbsenceApi realApi;
 
+  const vacationCount = 35;
+  const itemsPerPage = 10;
+
   setUp(() {
     realApi = AbsenceApi();
     api = MockAbsenceApi();
@@ -54,5 +57,73 @@ void main() {
 
     final absentList = await absenceRepository.fetchAbsenceList();
     expect(absentList, hasLength(5));
+  });
+
+  group('Pagination working correctly for type', () {
+    test('returns full page items when has more', () async {
+      when(api.fetchAllAbsent()).thenAnswer((_) async {
+        final all = await realApi.fetchAllAbsent();
+        return all.toList();
+      });
+
+      final vacAbsentList =
+          await absenceRepository.fetchAbsencesByType('vacation', page: 0);
+      expect(vacAbsentList.totalItemCount, vacationCount);
+      expect(vacAbsentList.items.length, equals(itemsPerPage));
+      expect(vacAbsentList.hasMore, equals(true));
+    });
+
+    test('returns partial page items for last page when has less item',
+        () async {
+      when(api.fetchAllAbsent()).thenAnswer((_) async {
+        final all = await realApi.fetchAllAbsent();
+        return all.toList();
+      });
+
+      final vacAbsentList =
+          await absenceRepository.fetchAbsencesByType('vacation', page: 4);
+      expect(vacAbsentList.totalItemCount, vacationCount);
+      expect(vacAbsentList.items.length, lessThanOrEqualTo(itemsPerPage));
+      expect(vacAbsentList.hasMore, equals(false));
+    });
+  });
+
+  group('Pagination working correctly for date range', () {
+    test('returns full page items when has more', () async {
+      when(api.fetchAllAbsent()).thenAnswer((_) async {
+        final all = await realApi.fetchAllAbsent();
+        return all.toList();
+      });
+
+      final vacAbsentList = await absenceRepository.fetchAbsencesByDateRange(
+        DateTimeRange(
+          start: DateTime.parse("2021-01-01"),
+          end: DateTime.parse("2021-04-01"),
+        ),
+        page: 0,
+      );
+      expect(vacAbsentList.totalItemCount, 22);
+      expect(vacAbsentList.items.length, equals(itemsPerPage));
+      expect(vacAbsentList.hasMore, equals(true));
+    });
+
+    test('returns partial page items for last page when has less item',
+        () async {
+      when(api.fetchAllAbsent()).thenAnswer((_) async {
+        final all = await realApi.fetchAllAbsent();
+        return all.toList();
+      });
+
+      final vacAbsentList = await absenceRepository.fetchAbsencesByDateRange(
+        DateTimeRange(
+          start: DateTime.parse("2021-01-01"),
+          end: DateTime.parse("2021-01-30"),
+        ),
+        page: 0,
+      );
+      expect(vacAbsentList.totalItemCount, 3);
+      expect(vacAbsentList.items.length, lessThanOrEqualTo(itemsPerPage));
+      expect(vacAbsentList.hasMore, equals(false));
+    });
   });
 }
