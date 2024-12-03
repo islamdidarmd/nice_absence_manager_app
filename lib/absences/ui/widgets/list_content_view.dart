@@ -79,7 +79,8 @@ class _DateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      label: Text(formatDateRange(absence.startDate, absence.endDate)),
+      label: Text(formatDateRange(
+          DateTimeRange(start: absence.startDate, end: absence.endDate))),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
     );
   }

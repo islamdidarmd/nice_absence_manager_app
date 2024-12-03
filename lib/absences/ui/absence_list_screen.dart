@@ -24,7 +24,7 @@ class AbsenceListScreen extends StatelessWidget {
             return AbsenceListView(
               list: state.absenceList,
               typeFilter: formatFilterByType(state.selectedFilter),
-              dateFilter: formatDateRange(state.startDate, state.endDate),
+              dateFilter: formatDateRange(state.dateRange),
             );
           }
           return const SizedBox();

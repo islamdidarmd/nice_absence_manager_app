@@ -96,15 +96,15 @@ class _TypeFilterButton extends StatelessWidget {
 class _DatePickerFilterButton extends StatelessWidget {
   const _DatePickerFilterButton({super.key});
 
-  Future<DateTime?> _selectDate(BuildContext context, String hint) {
-    return showDatePicker(
-      helpText: hint,
+  Future<DateTimeRange?> _selectDaterange(BuildContext context) {
+    return showDateRangePicker(
+      helpText: 'Select Date Range',
       confirmText: 'Select',
       context: context,
+      initialEntryMode: DatePickerEntryMode.input,
       barrierDismissible: false,
       firstDate: DateTime(2010),
       lastDate: DateTime.now(),
-      initialDatePickerMode: DatePickerMode.year,
     );
   }
 
@@ -119,16 +119,9 @@ class _DatePickerFilterButton extends StatelessWidget {
   }
 
   Future<void> _startDatePicker(BuildContext context) async {
-    final startDate = await _selectDate(context, 'Select Starting date');
-    if (startDate == null || !context.mounted) {
-      return;
+    final range = await _selectDaterange(context);
+    if (range != null && context.mounted) {
+      context.read<AbsenceListCubit>().filterAbsenceListByDate(range);
     }
-    final endDate = await _selectDate(context, 'Select Ending date');
-    if (endDate == null || !context.mounted) {
-      return;
-    }
-    context
-        .read<AbsenceListCubit>()
-        .filterAbsenceListByDate(startDate, endDate);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 enum TypeFilter { all, sickness, vacation }
@@ -15,9 +16,9 @@ String formatDateTime(DateTime time) {
   return formatter.format(time);
 }
 
-String formatDateRange(DateTime? start, DateTime? end) {
-  if (start == null || end == null) {
+String formatDateRange(DateTimeRange? range) {
+  if (range == null) {
     return '';
   }
-  return '${formatDateTime(start)} - ${formatDateTime(end)}';
+  return '${formatDateTime(range.start)} - ${formatDateTime(range.end)}';
 }

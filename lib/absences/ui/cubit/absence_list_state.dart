@@ -12,11 +12,10 @@ final class AbsenceListErrorState extends AbsenceListState {}
 
 final class AbsenceListLoadedState extends AbsenceListState {
   const AbsenceListLoadedState(this.selectedFilter, this.absenceList,
-      {this.startDate, this.endDate});
+      {this.dateRange});
 
   final TypeFilter selectedFilter;
-  final DateTime? startDate;
-  final DateTime? endDate;
+  final DateTimeRange? dateRange;
 
   final List<AbsenceListItemModel> absenceList;
 }

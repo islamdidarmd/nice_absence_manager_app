@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nice_absence_manager_app/absences/data/absence_repository.dart';
 import 'package:nice_absence_manager_app/absences/data/model/absence.dart';
@@ -57,20 +58,19 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
     emit(AbsenceListLoadedState(_typeFilter, _filtered));
   }
 
-  void filterAbsenceListByDate(DateTime start, DateTime end) {
+  void filterAbsenceListByDate(DateTimeRange range) {
     _typeFilter = TypeFilter.all;
     _filtered
       ..clear()
       ..addAll(
-        _allAbsence.where(
-            (e) => e.startDate.isAfter(start) && e.endDate.isBefore(end)),
+        _allAbsence.where((e) =>
+            e.startDate.isAfter(range.start) && e.endDate.isBefore(range.end)),
       );
     emit(
       AbsenceListLoadedState(
         _typeFilter,
         _filtered,
-        startDate: start,
-        endDate: end,
+        dateRange: range,
       ),
     );
   }
