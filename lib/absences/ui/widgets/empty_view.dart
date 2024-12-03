@@ -5,6 +5,6 @@ class EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Such empty....');
+    return const Center(child: const Text('No absence data found...'));
   }
 }

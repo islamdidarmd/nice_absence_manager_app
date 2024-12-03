@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
+import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/list_title_view.dart';
 
 class AbsenceListView extends StatelessWidget {
@@ -29,12 +30,31 @@ class AbsenceListView extends StatelessWidget {
           dateFilter: dateFilter,
         ),
         Expanded(
-          child: ListView.builder(
-            itemBuilder: (context, index) => _AbsenceListItemView(list[index]),
-            itemCount: itemCount,
-          ),
+          child: _ListContentView(list: list, itemCount: itemCount),
         )
       ],
+    );
+  }
+}
+
+class _ListContentView extends StatelessWidget {
+  const _ListContentView({
+    required this.list,
+    required this.itemCount,
+    super.key,
+  });
+
+  final List<AbsenceListItemModel> list;
+  final int itemCount;
+
+  @override
+  Widget build(BuildContext context) {
+    if (itemCount == 0) {
+      return const EmptyView();
+    }
+    return ListView.builder(
+      itemBuilder: (context, index) => _AbsenceListItemView(list[index]),
+      itemCount: itemCount,
     );
   }
 }

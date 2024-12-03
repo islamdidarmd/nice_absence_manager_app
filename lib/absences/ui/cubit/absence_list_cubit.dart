@@ -24,11 +24,7 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
       _allAbsence
         ..clear()
         ..addAll(await _fetchModels());
-      if (_allAbsence.isEmpty) {
-        emit(AbsenceListEmptyState());
-      } else {
-        emit(AbsenceListLoadedState(_typeFilter, _allAbsence));
-      }
+      emit(AbsenceListLoadedState(_typeFilter, _allAbsence));
     } catch (e) {
       emit(AbsenceListErrorState());
     }
