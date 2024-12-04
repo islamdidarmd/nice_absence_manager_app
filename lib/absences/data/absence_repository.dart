@@ -17,34 +17,20 @@ class AbsenceRepository {
     DateTimeRange? range,
     int page = 0,
   }) async {
-    //simulating a fake paginated api call
-    final allAbsent = (await absenceApi.fetchAllAbsent())
-        .map((e) => Absence.fromMap(e))
-        .toList(growable: false);
-
+    //Simulating a fake paginated api call.
+    //In real life we expect paginated data will be sent from Backend
+    //For now: adding pagination login here
+    //absenceApi is working like a file reader from storage
+    final allAbsent = await _simulateListFromFakeDB();
     final filtered = allAbsent.where(
-      (e) {
-        bool passedTypeCheck = false;
-        bool passedDateCheck = false;
-
-        if (type == null || e.type == type) {
-          passedTypeCheck = true;
-        }
-        if (range == null ||
-            (e.startDate.isAfter(range.start) &&
-                e.endDate.isBefore(range.end))) {
-          passedDateCheck = true;
-        }
-
-        return passedTypeCheck && passedDateCheck;
-      },
+      (e) => _doesAbsenceMatchesQuery(type, e, range),
     );
 
     final itemsForPage = filtered
         .skip(page * itemsPerPage)
         .take(itemsPerPage)
         .toList(growable: false);
-    //
+
     return PaginatedResponse(
       totalItemCount: filtered.length,
       items: itemsForPage,
@@ -58,5 +44,26 @@ class AbsenceRepository {
     //simulate api call
     await Future.delayed(const Duration(seconds: 1));
     return allMember.map((e) => Member.fromMap(e)).toList(growable: false);
+  }
+
+  bool _doesAbsenceMatchesQuery(String? type, Absence e, DateTimeRange? range) {
+    bool passedTypeCheck = false;
+    bool passedDateCheck = false;
+
+    if (type == null || e.type == type) {
+      passedTypeCheck = true;
+    }
+    if (range == null ||
+        (e.startDate.isAfter(range.start) && e.endDate.isBefore(range.end))) {
+      passedDateCheck = true;
+    }
+
+    return passedTypeCheck && passedDateCheck;
+  }
+
+  Future<List<Absence>> _simulateListFromFakeDB() async {
+    return (await absenceApi.fetchAllAbsent())
+        .map((e) => Absence.fromMap(e))
+        .toList(growable: false);
   }
 }

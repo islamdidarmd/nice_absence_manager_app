@@ -36,7 +36,7 @@ void main() {
       },
       build: () => AbsenceListCubit(absenceRepository),
       act: (cubit) {
-        cubit.loadAbsenceList();
+        cubit.loadInitialAbsenceList();
       },
       expect: () => [
         isA<AbsenceListLoadingState>(),
@@ -56,7 +56,7 @@ void main() {
       },
       build: () => AbsenceListCubit(absenceRepository),
       act: (cubit) {
-        cubit.loadAbsenceList();
+        cubit.loadInitialAbsenceList();
       },
       expect: () => [
         isA<AbsenceListLoadingState>(),

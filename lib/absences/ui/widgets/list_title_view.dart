@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
+import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/filter_dialog.dart';
 
 class ListTitleView extends StatelessWidget {
@@ -14,8 +15,8 @@ class ListTitleView extends StatelessWidget {
   });
 
   final int total;
-  final String typeFilter;
-  final String dateFilter;
+  final TypeFilter typeFilter;
+  final DateTimeRange? dateFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,8 @@ class ListTitleView extends StatelessWidget {
               dateFilter: dateFilter,
             ),
             const Spacer(),
-            const _TypeFilterButton(),
-            const _DatePickerFilterButton(),
+            _TypeFilterButton(typeFilter),
+            _DatePickerFilterButton(selected: dateFilter),
           ],
         ),
       ),
@@ -49,27 +50,30 @@ class _TotalView extends StatelessWidget {
   });
 
   final int total;
-  final String typeFilter;
-  final String dateFilter;
+  final TypeFilter typeFilter;
+  final DateTimeRange? dateFilter;
 
   @override
   Widget build(BuildContext context) {
+    final visibleTypeFilter = formatFilterByType(typeFilter);
+    final visibleDateFilter = formatDateRange(dateFilter);
+    final textStyle = Theme.of(context).textTheme.titleMedium;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Total Absence: $total',
-          style: Theme.of(context).textTheme.titleMedium,
+          style: textStyle,
         ),
-        if (typeFilter.isNotEmpty)
+        Text(
+          visibleTypeFilter,
+          style: textStyle,
+        ),
+        if (visibleDateFilter.isNotEmpty)
           Text(
-            typeFilter,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        if (dateFilter.isNotEmpty)
-          Text(
-            dateFilter,
-            style: Theme.of(context).textTheme.titleMedium,
+            visibleDateFilter,
+            style: textStyle,
           ),
       ],
     );
@@ -77,7 +81,9 @@ class _TotalView extends StatelessWidget {
 }
 
 class _TypeFilterButton extends StatelessWidget {
-  const _TypeFilterButton({super.key});
+  const _TypeFilterButton(this.selected, {super.key});
+
+  final TypeFilter selected;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +91,7 @@ class _TypeFilterButton extends StatelessWidget {
       onPressed: () {
         showDialog<void>(
           context: context,
-          builder: (context) => const FilterDialog(),
+          builder: (context) => TypeFilterDialog(selected),
         );
       },
       icon: const Icon(Icons.filter_list),
@@ -94,16 +100,21 @@ class _TypeFilterButton extends StatelessWidget {
 }
 
 class _DatePickerFilterButton extends StatelessWidget {
-  const _DatePickerFilterButton({super.key});
+  const _DatePickerFilterButton({this.selected, super.key});
 
-  Future<DateTimeRange?> _selectDaterange(BuildContext context) {
+  final DateTimeRange? selected;
+
+  int get _startingYear => 2010;
+
+  Future<DateTimeRange?> _selectDateRange(BuildContext context) {
     return showDateRangePicker(
       helpText: 'Select Date Range',
-      confirmText: 'Select',
+      confirmText: 'Filter',
       context: context,
-      initialEntryMode: DatePickerEntryMode.input,
+      initialDateRange: selected ??
+          DateTimeRange(start: DateTime(_startingYear), end: DateTime.now()),
       barrierDismissible: false,
-      firstDate: DateTime(2010),
+      firstDate: DateTime(_startingYear),
       lastDate: DateTime.now(),
     );
   }
@@ -119,9 +130,11 @@ class _DatePickerFilterButton extends StatelessWidget {
   }
 
   Future<void> _startDatePicker(BuildContext context) async {
-    final range = await _selectDaterange(context);
+    final range = await _selectDateRange(context);
     if (range != null && context.mounted) {
-      context.read<AbsenceListCubit>().filterAbsenceListByDate(range);
+      unawaited(
+        context.read<AbsenceListCubit>().filterAbsenceListByDate(range),
+      );
     }
   }
 }

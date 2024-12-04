@@ -6,6 +6,7 @@ class ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-        child: Text('Failed to load absences. Please try again later'));
+      child: Text('Failed to load absences. Please try again later'),
+    );
   }
 }

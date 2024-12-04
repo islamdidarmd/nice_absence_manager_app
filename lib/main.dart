@@ -16,7 +16,7 @@ class NiceAbsenceManagerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AbsenceListCubit>(
-      create: (_) => di.get()..loadAbsenceList(),
+      create: (_) => di.get()..loadInitialAbsenceList(),
       child: MaterialApp(
         title: 'Nice Absence Manager App',
         theme: lightTheme,

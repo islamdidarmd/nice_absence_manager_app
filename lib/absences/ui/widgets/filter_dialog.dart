@@ -3,29 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 
-class FilterDialog extends StatelessWidget {
-  const FilterDialog({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AbsenceListCubit, AbsenceListState>(
-      buildWhen: (previous, current) => current is AbsenceListLoadedState,
-      builder: (context, state) {
-        if (state is AbsenceListLoadedState) {
-          final selectedOption = state.selectedFilter;
-          return _DialogBody(selectedOption: selectedOption);
-        }
-        return const SizedBox();
-      },
-    );
-  }
-}
-
-class _DialogBody extends StatelessWidget {
-  const _DialogBody({
-    required this.selectedOption,
-    super.key,
-  });
+class TypeFilterDialog extends StatelessWidget {
+  const TypeFilterDialog(this.selectedOption, {super.key});
 
   final TypeFilter selectedOption;
 

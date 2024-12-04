@@ -5,6 +5,7 @@ import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.da
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
+import 'package:nice_absence_manager_app/spacing.dart';
 
 class ListContentView extends StatefulWidget {
   const ListContentView({
@@ -22,7 +23,7 @@ class ListContentView extends StatefulWidget {
 
 class _ListContentViewState extends State<ListContentView> {
   final _scrollController = ScrollController();
-  final _preloadPixels = 200;
+  final _bufferedPixelCount = 200;
 
   @override
   void initState() {
@@ -43,14 +44,15 @@ class _ListContentViewState extends State<ListContentView> {
     }
     return ListView.builder(
       controller: _scrollController,
-      itemBuilder: (context, index) => _AbsenceListItemView(widget.list[index]),
+      itemBuilder: (_, index) => _AbsenceListItemView(widget.list[index]),
       itemCount: widget.itemCount,
     );
   }
 
   void _listenToScrollChange() {
-    if (_scrollController.position.pixels >
-        _scrollController.position.maxScrollExtent - _preloadPixels) {
+    final shouldPreload = _scrollController.position.pixels >
+        _scrollController.position.maxScrollExtent - _bufferedPixelCount;
+    if (shouldPreload) {
       context.read<AbsenceListCubit>().loadMore();
     }
   }
@@ -65,7 +67,7 @@ class _AbsenceListItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(medium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -91,7 +93,7 @@ class _TitleView extends StatelessWidget {
         CircleAvatar(
           foregroundImage: CachedNetworkImageProvider(absence.picture),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: medium),
         Text(
           absence.memberName,
           style: Theme.of(context).textTheme.titleMedium,
@@ -123,6 +125,15 @@ class _InfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bgColorImportant = Theme.of(context).colorScheme.secondaryContainer;
+    final optionalInfo = <Widget>[];
+    if (absence.memberNote.isNotEmpty) {
+      optionalInfo.add(Text('Member Note: ${absence.memberNote}'));
+    }
+    if (absence.admitterNote.isNotEmpty) {
+      optionalInfo.add(Text('Admitter Note: ${absence.admitterNote}'));
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -130,19 +141,16 @@ class _InfoView extends StatelessWidget {
           children: [
             Chip(
               label: Text(_formatStatus(absence.status)),
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              backgroundColor: bgColorImportant,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: small),
             Chip(
               label: Text(_formatType(absence.type)),
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              backgroundColor: bgColorImportant,
             ),
           ],
         ),
-        if (absence.memberNote.isNotEmpty)
-          Text('Member Note: ${absence.memberNote}'),
-        if (absence.admitterNote.isNotEmpty)
-          Text('Admitter Note: ${absence.admitterNote}'),
+        ...optionalInfo,
       ],
     );
   }

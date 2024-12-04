@@ -8,6 +8,7 @@ import 'package:nice_absence_manager_app/absences/data/model/member.dart';
 import 'package:nice_absence_manager_app/absences/data/model/paginated_response.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
+import 'package:nice_absence_manager_app/console_logger.dart';
 
 part 'absence_list_state.dart';
 
@@ -24,7 +25,7 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
   DateTimeRange? _dateRangeFilter;
   bool _isLoadingNext = false;
 
-  Future<void> loadAbsenceList() async {
+  Future<void> loadInitialAbsenceList() async {
     emit(AbsenceListLoadingState());
     try {
       final memberList = await absenceRepository.fetchMemberList();
@@ -49,7 +50,7 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
       emit(_createListLoadedState());
       _isLoadingNext = false;
     } catch (e) {
-      //todo: add error state
+      consoleLog('Error while loading more: $e');
     }
   }
 
@@ -64,7 +65,7 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
       await _fetchNextPage();
       emit(_createListLoadedState());
     } catch (e) {
-      //todo: add error state
+      consoleLog('Error while loading filtered list by type: $e');
     }
   }
 
@@ -76,14 +77,14 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
       await _fetchNextPage();
       emit(_createListLoadedState());
     } catch (e) {
-      //todo: add error state
+      consoleLog('Error while loading filtered list by date: $e');
     }
   }
 
   Future<void> _fetchNextPage() async {
     final currentPage = _paginatedResponse?.currentPage ?? -1;
     _paginatedResponse = await absenceRepository.fetchAbsencesListByFilter(
-      type: _getAbsenceTypeFromFilter(),
+      type: _getRawTypeFromFilter(),
       range: _dateRangeFilter,
       page: currentPage + 1,
     );
@@ -91,7 +92,7 @@ class AbsenceListCubit extends Cubit<AbsenceListState> {
     _paginatedAbsence.addAll(mappedList);
   }
 
-  String? _getAbsenceTypeFromFilter() {
+  String? _getRawTypeFromFilter() {
     return switch (_typeFilter) {
       TypeFilter.all => null,
       TypeFilter.sickness => 'sickness',
