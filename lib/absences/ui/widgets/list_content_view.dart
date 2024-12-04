@@ -5,6 +5,7 @@ import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.da
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
+import 'package:nice_absence_manager_app/adaptive_size.dart';
 import 'package:nice_absence_manager_app/spacing.dart';
 
 class ListContentView extends StatefulWidget {
@@ -42,10 +43,21 @@ class _ListContentViewState extends State<ListContentView> {
     if (widget.itemCount == 0) {
       return const EmptyView();
     }
-    return ListView.builder(
-      controller: _scrollController,
-      itemBuilder: (_, index) => _AbsenceListItemView(widget.list[index]),
-      itemCount: widget.itemCount,
+
+    return LayoutBuilder(
+      builder: (_, constraints) {
+        final gridSize = getAdaptiveGridSize(constraints.maxWidth);
+        if (gridSize.columnCount > 0) {
+          return _ContentGridView(
+            gridSize: gridSize,
+            scrollController: _scrollController,
+            widget: widget,
+          );
+        } else {
+          return _ContentListView(
+              scrollController: _scrollController, widget: widget);
+        }
+      },
     );
   }
 
@@ -58,8 +70,54 @@ class _ListContentViewState extends State<ListContentView> {
   }
 }
 
-class _AbsenceListItemView extends StatelessWidget {
-  const _AbsenceListItemView(this.absence, {super.key});
+class _ContentListView extends StatelessWidget {
+  const _ContentListView({
+    required ScrollController scrollController,
+    required this.widget,
+    super.key,
+  }) : _scrollController = scrollController;
+
+  final ScrollController _scrollController;
+  final ListContentView widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      controller: _scrollController,
+      itemBuilder: (_, index) => _AbsenceItemView(widget.list[index]),
+      itemCount: widget.itemCount,
+    );
+  }
+}
+
+class _ContentGridView extends StatelessWidget {
+  const _ContentGridView({
+    required this.gridSize,
+    required ScrollController scrollController,
+    required this.widget,
+    super.key,
+  }) : _scrollController = scrollController;
+
+  final AdaptiveGridSize gridSize;
+  final ScrollController _scrollController;
+  final ListContentView widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: gridSize.columnCount,
+        childAspectRatio: gridSize.aspectRatio,
+      ),
+      controller: _scrollController,
+      itemBuilder: (_, index) => _AbsenceItemView(widget.list[index]),
+      itemCount: widget.itemCount,
+    );
+  }
+}
+
+class _AbsenceItemView extends StatelessWidget {
+  const _AbsenceItemView(this.absence, {super.key});
 
   final AbsenceListItemModel absence;
 
@@ -72,7 +130,9 @@ class _AbsenceListItemView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _TitleView(absence),
+            SizedBox(height: xSmall),
             _DateView(absence),
+            SizedBox(height: xSmall),
             _InfoView(absence),
           ],
         ),
@@ -113,7 +173,8 @@ class _DateView extends StatelessWidget {
     return Chip(
       label: Text(formatDateRange(
           DateTimeRange(start: absence.startDate, end: absence.endDate))),
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }
@@ -126,14 +187,12 @@ class _InfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColorImportant = Theme.of(context).colorScheme.secondaryContainer;
-    final optionalInfo = <Widget>[];
-    if (absence.memberNote.isNotEmpty) {
-      optionalInfo.add(Text('Member Note: ${absence.memberNote}'));
+    Color bgColorHighLight;
+    if (absence.status == AbsenceStatus.rejected) {
+      bgColorHighLight = Theme.of(context).colorScheme.errorContainer;
+    } else {
+      bgColorHighLight = Theme.of(context).colorScheme.primaryContainer;
     }
-    if (absence.admitterNote.isNotEmpty) {
-      optionalInfo.add(Text('Admitter Note: ${absence.admitterNote}'));
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -141,18 +200,39 @@ class _InfoView extends StatelessWidget {
           children: [
             Chip(
               label: Text(_formatStatus(absence.status)),
-              backgroundColor: bgColorImportant,
+              backgroundColor: bgColorHighLight,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             const SizedBox(width: small),
             Chip(
               label: Text(_formatType(absence.type)),
               backgroundColor: bgColorImportant,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
           ],
         ),
-        ...optionalInfo,
+        ..._getNoteView(),
       ],
     );
+  }
+
+  List<Widget> _getNoteView() {
+    final optionalInfo = <Widget>[];
+    if (absence.memberNote.isNotEmpty) {
+      optionalInfo.add(
+        Text(
+          'Member Note: ${absence.memberNote}',
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
+    }
+    if (absence.admitterNote.isNotEmpty) {
+      optionalInfo.add(
+        Text('Admitter Note: ${absence.admitterNote}',
+            overflow: TextOverflow.ellipsis),
+      );
+    }
+    return optionalInfo;
   }
 
   String _formatStatus(AbsenceStatus status) {
