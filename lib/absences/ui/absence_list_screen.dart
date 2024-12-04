@@ -15,20 +15,18 @@ class AbsenceListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Absence List')),
       body: BlocBuilder<AbsenceListCubit, AbsenceListState>(
-        builder: (context, state) {
-          if (state is AbsenceListLoadingState) {
-            return const LoadingView();
-          } else if (state is AbsenceListErrorState) {
-            return const ErrorView();
-          } else if (state is AbsenceListLoadedState) {
-            return AbsenceListView(
-              totalItemCount: state.totalItemCount,
-              list: state.absenceList,
-              typeFilter: state.selectedFilter,
-              dateFilter: state.dateRange,
-            );
-          }
-          return const SizedBox();
+        builder: (_, state) {
+          return switch (state) {
+            AbsenceListLoadingState() => const LoadingView(),
+            AbsenceListErrorState() => const ErrorView(),
+            AbsenceListLoadedState() => AbsenceListView(
+                totalItemCount: state.totalItemCount,
+                list: state.absenceList,
+                typeFilter: state.selectedFilter,
+                dateFilter: state.dateRange,
+              ),
+            _ => const SizedBox(),
+          };
         },
       ),
     );
