@@ -6,8 +6,8 @@ import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.da
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/filter_dialog.dart';
 
-class ListTitleView extends StatelessWidget {
-  const ListTitleView({
+class HeadingView extends StatelessWidget {
+  const HeadingView({
     required this.total,
     required this.typeFilter,
     required this.dateFilter,
