@@ -8,7 +8,7 @@ import 'package:nice_absence_manager_app/absences/data/model/member.dart';
 import 'package:nice_absence_manager_app/absences/data/model/paginated_response.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
-import 'package:nice_absence_manager_app/console_logger.dart';
+import 'package:nice_absence_manager_app/core/console_logger.dart';
 
 part 'absence_list_state.dart';
 

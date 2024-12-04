@@ -5,8 +5,8 @@ import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.da
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
-import 'package:nice_absence_manager_app/adaptive_size.dart';
-import 'package:nice_absence_manager_app/spacing.dart';
+import 'package:nice_absence_manager_app/core/adaptive_size.dart';
+import 'package:nice_absence_manager_app/core/spacing.dart';
 
 class ListContentView extends StatefulWidget {
   const ListContentView({
