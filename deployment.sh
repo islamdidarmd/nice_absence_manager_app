@@ -16,6 +16,5 @@
     }
 
     # Main script execution
-    checkout_and_rebase
     build_flutter_web
     deploy_to_pages
