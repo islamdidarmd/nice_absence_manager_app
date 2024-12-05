@@ -10,6 +10,7 @@ enum AbsenceStatus {
 enum AbsenceType {
   vacation,
   sickness,
+  other,
 }
 
 class AbsenceListItemModel {
@@ -26,31 +27,19 @@ class AbsenceListItemModel {
     required this.status,
   });
 
-  factory AbsenceListItemModel.from(Absence absence, Member member) {
-    var status = AbsenceStatus.requested;
-    if (absence.rejectedAt != null) {
-      status = AbsenceStatus.rejected;
-    } else if (absence.confirmedAt != null) {
-      status = AbsenceStatus.confirmed;
-    }
-    var type = AbsenceType.vacation;
-    if (absence.type == 'sickness') {
-      type = AbsenceType.sickness;
-    }
-
-    return AbsenceListItemModel(
-      userId: absence.userId,
-      picture: member.image,
-      memberName: member.name,
-      type: type,
-      startDate: absence.startDate,
-      endDate: absence.endDate,
-      memberNote: absence.memberNote,
-      rejectedAt: absence.rejectedAt,
-      admitterNote: absence.admitterNote,
-      status: status,
-    );
-  }
+  factory AbsenceListItemModel.from(Absence absence, Member member) =>
+      AbsenceListItemModel(
+        userId: absence.userId,
+        picture: member.image,
+        memberName: member.name,
+        type: _parseType(absence),
+        startDate: absence.startDate,
+        endDate: absence.endDate,
+        memberNote: absence.memberNote,
+        rejectedAt: absence.rejectedAt,
+        admitterNote: absence.admitterNote,
+        status: _parseStatus(absence),
+      );
 
   final int userId;
   final String picture;
@@ -62,4 +51,28 @@ class AbsenceListItemModel {
   final DateTime? rejectedAt;
   final String admitterNote;
   final AbsenceStatus status;
+}
+
+AbsenceStatus _parseStatus(Absence absence) {
+  AbsenceStatus status;
+  if (absence.rejectedAt != null) {
+    status = AbsenceStatus.rejected;
+  } else if (absence.confirmedAt != null) {
+    status = AbsenceStatus.confirmed;
+  } else {
+    status = AbsenceStatus.requested;
+  }
+  return status;
+}
+
+AbsenceType _parseType(Absence absence) {
+  AbsenceType type;
+  if (absence.type == 'sickness') {
+    type = AbsenceType.sickness;
+  } else if (absence.type == 'vacation') {
+    type = AbsenceType.vacation;
+  } else {
+    type = AbsenceType.other;
+  }
+  return type;
 }

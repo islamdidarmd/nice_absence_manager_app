@@ -12,5 +12,6 @@ String mapTypeToString(AbsenceType type) {
   return switch (type) {
     AbsenceType.vacation => 'Vacation',
     AbsenceType.sickness => 'Sickness',
+    AbsenceType.other => 'Other',
   };
 }
