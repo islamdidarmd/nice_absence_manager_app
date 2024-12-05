@@ -56,7 +56,7 @@ class _ListContentViewState extends State<ListContentView> {
           );
         } else {
           return _ContentListView(
-              scrollController: _scrollController, widget: widget);
+              scrollController: _scrollController, widget: widget,);
         }
       },
     );
@@ -75,7 +75,6 @@ class _ContentListView extends StatelessWidget {
   const _ContentListView({
     required ScrollController scrollController,
     required this.widget,
-    super.key,
   }) : _scrollController = scrollController;
 
   final ScrollController _scrollController;
@@ -96,7 +95,6 @@ class _ContentGridView extends StatelessWidget {
     required this.gridSize,
     required ScrollController scrollController,
     required this.widget,
-    super.key,
   }) : _scrollController = scrollController;
 
   final AdaptiveGridSize gridSize;
@@ -118,7 +116,7 @@ class _ContentGridView extends StatelessWidget {
 }
 
 class _AbsenceItemView extends StatelessWidget {
-  const _AbsenceItemView(this.absence, {super.key});
+  const _AbsenceItemView(this.absence);
 
   final AbsenceListItemModel absence;
 
@@ -153,7 +151,7 @@ class _AbsenceItemView extends StatelessWidget {
 }
 
 class _TitleView extends StatelessWidget {
-  const _TitleView(this.absence, {super.key});
+  const _TitleView(this.absence);
 
   final AbsenceListItemModel absence;
 
@@ -175,7 +173,7 @@ class _TitleView extends StatelessWidget {
 }
 
 class _DateView extends StatelessWidget {
-  const _DateView(this.absence, {super.key});
+  const _DateView(this.absence);
 
   final AbsenceListItemModel absence;
 
@@ -183,7 +181,7 @@ class _DateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       label: Text(mapFilterDateRangeToString(
-          DateTimeRange(start: absence.startDate, end: absence.endDate))),
+          DateTimeRange(start: absence.startDate, end: absence.endDate),),),
       backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
@@ -191,7 +189,7 @@ class _DateView extends StatelessWidget {
 }
 
 class _InfoView extends StatelessWidget {
-  const _InfoView(this.absence, {super.key});
+  const _InfoView(this.absence);
 
   final AbsenceListItemModel absence;
 
@@ -240,7 +238,7 @@ class _InfoView extends StatelessWidget {
     if (absence.admitterNote.isNotEmpty) {
       optionalInfo.add(
         Text('Admitter Note: ${absence.admitterNote}',
-            overflow: TextOverflow.ellipsis),
+            overflow: TextOverflow.ellipsis,),
       );
     }
     return optionalInfo;

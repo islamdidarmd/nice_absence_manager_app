@@ -47,7 +47,6 @@ class _TotalView extends StatelessWidget {
     required this.total,
     required this.typeFilter,
     required this.dateFilter,
-    super.key,
   });
 
   final int total;
@@ -82,7 +81,7 @@ class _TotalView extends StatelessWidget {
 }
 
 class _TypeFilterButton extends StatelessWidget {
-  const _TypeFilterButton(this.selected, {super.key});
+  const _TypeFilterButton(this.selected);
 
   final TypeFilter selected;
 
@@ -101,7 +100,7 @@ class _TypeFilterButton extends StatelessWidget {
 }
 
 class _DatePickerFilterButton extends StatelessWidget {
-  const _DatePickerFilterButton({this.selected, super.key});
+  const _DatePickerFilterButton({this.selected});
 
   final DateTimeRange? selected;
 

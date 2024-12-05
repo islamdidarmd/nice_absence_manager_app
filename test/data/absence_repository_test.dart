@@ -53,7 +53,7 @@ void main() {
       });
 
       final vacAbsentList = await absenceRepository.fetchAbsencesListByFilter(
-          type: 'vacation', page: 0);
+          type: 'vacation',);
       expect(vacAbsentList.totalItemCount, vacationCount);
       expect(vacAbsentList.items.length, equals(itemsPerPage));
       expect(vacAbsentList.hasMore, equals(true));
@@ -67,7 +67,7 @@ void main() {
       });
 
       final vacAbsentList = await absenceRepository.fetchAbsencesListByFilter(
-          type: 'vacation', page: 4);
+          type: 'vacation', page: 4,);
       expect(vacAbsentList.totalItemCount, vacationCount);
       expect(vacAbsentList.items.length, lessThanOrEqualTo(itemsPerPage));
       expect(vacAbsentList.hasMore, equals(false));
@@ -83,10 +83,9 @@ void main() {
 
       final vacAbsentList = await absenceRepository.fetchAbsencesListByFilter(
         range: DateTimeRange(
-          start: DateTime.parse("2021-01-01"),
-          end: DateTime.parse("2021-04-01"),
+          start: DateTime.parse('2021-01-01'),
+          end: DateTime.parse('2021-04-01'),
         ),
-        page: 0,
       );
       expect(vacAbsentList.totalItemCount, 22);
       expect(vacAbsentList.items.length, equals(itemsPerPage));
@@ -102,10 +101,9 @@ void main() {
 
       final vacAbsentList = await absenceRepository.fetchAbsencesListByFilter(
         range: DateTimeRange(
-          start: DateTime.parse("2021-01-01"),
-          end: DateTime.parse("2021-01-30"),
+          start: DateTime.parse('2021-01-01'),
+          end: DateTime.parse('2021-01-30'),
         ),
-        page: 0,
       );
       expect(vacAbsentList.totalItemCount, 3);
       expect(vacAbsentList.items.length, lessThanOrEqualTo(itemsPerPage));
@@ -123,10 +121,9 @@ void main() {
       final vacAbsentList = await absenceRepository.fetchAbsencesListByFilter(
         type: 'vacation',
         range: DateTimeRange(
-          start: DateTime.parse("2021-01-01"),
-          end: DateTime.parse("2021-04-01"),
+          start: DateTime.parse('2021-01-01'),
+          end: DateTime.parse('2021-04-01'),
         ),
-        page: 0,
       );
       expect(vacAbsentList.totalItemCount, 18);
       expect(vacAbsentList.items.length, equals(itemsPerPage));
@@ -143,10 +140,9 @@ void main() {
       final vacAbsentList = await absenceRepository.fetchAbsencesListByFilter(
         type: 'vacation',
         range: DateTimeRange(
-          start: DateTime.parse("2021-01-01"),
-          end: DateTime.parse("2021-01-30"),
+          start: DateTime.parse('2021-01-01'),
+          end: DateTime.parse('2021-01-30'),
         ),
-        page: 0,
       );
       expect(vacAbsentList.totalItemCount, 2);
       expect(vacAbsentList.items.length, lessThanOrEqualTo(itemsPerPage));

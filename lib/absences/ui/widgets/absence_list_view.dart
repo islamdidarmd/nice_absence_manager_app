@@ -30,7 +30,7 @@ class AbsenceListView extends StatelessWidget {
         ),
         Expanded(
           child: ListContentView(list: list, itemCount: list.length),
-        )
+        ),
       ],
     );
   }

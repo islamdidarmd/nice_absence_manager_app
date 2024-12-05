@@ -42,7 +42,7 @@ class AbsenceRepository {
   Future<List<Member>> fetchMemberList() async {
     final allMember = await absenceApi.fetchAllMember();
     //simulate api call
-    await Future.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(seconds: 1));
     return allMember.map((e) => Member.fromMap(e)).toList(growable: false);
   }
 

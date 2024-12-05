@@ -54,7 +54,6 @@ class _Choice extends StatelessWidget {
     required this.value,
     required this.selected,
     required this.onSelected,
-    super.key,
   });
 
   final String text;

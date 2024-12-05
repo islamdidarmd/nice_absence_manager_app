@@ -48,7 +48,9 @@ void main() {
       setUp: () {
         absenceRepository = MockAbsenceRepository();
         when(absenceRepository.fetchMemberList()).thenThrow(Exception());
-        when(absenceRepository.fetchAbsencesListByFilter()).thenThrow(Exception());
+        when(absenceRepository.fetchAbsencesListByFilter()).thenThrow(
+          Exception(),
+        );
       },
       tearDown: () {
         reset(absenceRepository);
