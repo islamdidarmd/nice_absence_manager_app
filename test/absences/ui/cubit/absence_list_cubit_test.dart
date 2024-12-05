@@ -6,7 +6,6 @@ import 'package:nice_absence_manager_app/absences/data/absence_repository.dart';
 import 'package:nice_absence_manager_app/absences/data/model/member.dart';
 import 'package:nice_absence_manager_app/absences/data/model/paginated_response.dart';
 import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
 
 import 'absence_list_cubit_test.mocks.dart';
 

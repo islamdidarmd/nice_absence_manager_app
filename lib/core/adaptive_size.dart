@@ -17,11 +17,11 @@ AdaptiveGridSize getAdaptiveGridSize(double width) {
   } else if (width > 800) {
     columnCount = 2;
     aspectRatio = 2;
-  } else if (width > 600) {
+  } else if (width > 720) {
     columnCount = 2;
     aspectRatio = 1.5;
-  } else if (width > 420) {
-    columnCount = 2;
+  } else if (width > 480) {
+    columnCount = 0;
     aspectRatio = 1;
   }
   return AdaptiveGridSize(columnCount, aspectRatio);

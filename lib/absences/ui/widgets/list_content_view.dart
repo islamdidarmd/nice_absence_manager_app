@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
+import 'package:nice_absence_manager_app/absences/ui/mapper/absence_mapper.dart';
+import 'package:nice_absence_manager_app/absences/ui/mapper/filter_mapper.dart';
 import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
 import 'package:nice_absence_manager_app/core/adaptive_size.dart';
@@ -123,18 +124,28 @@ class _AbsenceItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(medium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _TitleView(absence),
-            SizedBox(height: xSmall),
-            _DateView(absence),
-            SizedBox(height: xSmall),
-            _InfoView(absence),
-          ],
+    return InkWell(
+      onTap: () {
+        final box = context.findRenderObject() as RenderBox?;
+        final sharePosition = box!.localToGlobal(Offset.zero) & box.size;
+        context.read<AbsenceListCubit>().shareICal(
+              absence,
+              sharePosition,
+            );
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(medium),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _TitleView(absence),
+              const SizedBox(height: xSmall),
+              _DateView(absence),
+              const SizedBox(height: xSmall),
+              _InfoView(absence),
+            ],
+          ),
         ),
       ),
     );
@@ -171,7 +182,7 @@ class _DateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      label: Text(formatDateRange(
+      label: Text(mapFilterDateRangeToString(
           DateTimeRange(start: absence.startDate, end: absence.endDate))),
       backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -199,13 +210,13 @@ class _InfoView extends StatelessWidget {
         Row(
           children: [
             Chip(
-              label: Text(_formatStatus(absence.status)),
+              label: Text(mapStatusToString(absence.status)),
               backgroundColor: bgColorHighLight,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             const SizedBox(width: small),
             Chip(
-              label: Text(_formatType(absence.type)),
+              label: Text(mapTypeToString(absence.type)),
               backgroundColor: bgColorImportant,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
@@ -233,20 +244,5 @@ class _InfoView extends StatelessWidget {
       );
     }
     return optionalInfo;
-  }
-
-  String _formatStatus(AbsenceStatus status) {
-    return switch (status) {
-      AbsenceStatus.requested => 'Requested',
-      AbsenceStatus.rejected => 'Rejected',
-      AbsenceStatus.confirmed => 'Confirmed',
-    };
-  }
-
-  String _formatType(AbsenceType type) {
-    return switch (type) {
-      AbsenceType.vacation => 'Vacation',
-      AbsenceType.sickness => 'Sickness',
-    };
   }
 }

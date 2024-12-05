@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
+import 'package:nice_absence_manager_app/absences/ui/view_model/type_filter.dart';
 
 class TypeFilterDialog extends StatelessWidget {
   const TypeFilterDialog(this.selectedOption, {super.key});

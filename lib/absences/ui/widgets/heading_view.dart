@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/absence_filter.dart';
+import 'package:nice_absence_manager_app/absences/ui/mapper/filter_mapper.dart';
+import 'package:nice_absence_manager_app/absences/ui/view_model/type_filter.dart';
 import 'package:nice_absence_manager_app/absences/ui/widgets/filter_dialog.dart';
 
 class HeadingView extends StatelessWidget {
@@ -55,8 +56,8 @@ class _TotalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visibleTypeFilter = formatFilterByType(typeFilter);
-    final visibleDateFilter = formatDateRange(dateFilter);
+    final visibleTypeFilter = mapFilterByTypeToString(typeFilter);
+    final visibleDateFilter = mapFilterDateRangeToString(dateFilter);
     final textStyle = Theme.of(context).textTheme.titleMedium;
 
     return Column(
@@ -91,7 +92,7 @@ class _TypeFilterButton extends StatelessWidget {
       onPressed: () {
         showDialog<void>(
           context: context,
-          builder: (context) => TypeFilterDialog(selected),
+          builder: (_) => TypeFilterDialog(selected),
         );
       },
       icon: const Icon(Icons.filter_list),

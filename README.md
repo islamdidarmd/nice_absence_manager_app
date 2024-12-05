@@ -1,13 +1,5 @@
-<p align="center">
-  <img src="https://crewmeister.com/images/logo_crewmeister_without_text.svg" />
-</p>
-
-# 🚀 Crewmeister coding challenge - Frontend (Flutter)
-
-Hello and thanks in participating in the crewmeister coding challenge. This coding exercise will help us get a better feeling about your coding process.
-
-If you have any questions, we're happy to help you. Reach the devs at challenge@crewmeister.com.
-
+# 🚀 Nice Absence Manager App - Flutter
+This app displays the list of absences
 ## Context
 
 At Crewmeister we like to work closely with our clients, listening to their demands and developing solutions for their problems. One of the most requested features is a way for company owners to manage sickness and vacations of employees.
