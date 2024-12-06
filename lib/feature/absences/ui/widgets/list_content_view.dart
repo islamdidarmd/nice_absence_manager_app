@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
-import 'package:nice_absence_manager_app/absences/ui/mapper/absence_mapper.dart';
-import 'package:nice_absence_manager_app/absences/ui/mapper/filter_mapper.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
-import 'package:nice_absence_manager_app/absences/ui/widgets/empty_view.dart';
 import 'package:nice_absence_manager_app/core/adaptive_size.dart';
 import 'package:nice_absence_manager_app/core/spacing.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/cubit/absence_list_cubit.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/mapper/absence_mapper.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/mapper/filter_mapper.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/view_model/absence_list_item_model.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/widgets/empty_view.dart';
 
 class ListContentView extends StatefulWidget {
   const ListContentView({
@@ -56,7 +56,9 @@ class _ListContentViewState extends State<ListContentView> {
           );
         } else {
           return _ContentListView(
-              scrollController: _scrollController, widget: widget,);
+            scrollController: _scrollController,
+            widget: widget,
+          );
         }
       },
     );
@@ -180,8 +182,11 @@ class _DateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      label: Text(mapFilterDateRangeToString(
-          DateTimeRange(start: absence.startDate, end: absence.endDate),),),
+      label: Text(
+        mapFilterDateRangeToString(
+          DateTimeRange(start: absence.startDate, end: absence.endDate),
+        ),
+      ),
       backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
@@ -237,8 +242,10 @@ class _InfoView extends StatelessWidget {
     }
     if (absence.admitterNote.isNotEmpty) {
       optionalInfo.add(
-        Text('Admitter Note: ${absence.admitterNote}',
-            overflow: TextOverflow.ellipsis,),
+        Text(
+          'Admitter Note: ${absence.admitterNote}',
+          overflow: TextOverflow.ellipsis,
+        ),
       );
     }
     return optionalInfo;

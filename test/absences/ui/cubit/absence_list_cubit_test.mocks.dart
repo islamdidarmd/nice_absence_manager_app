@@ -7,14 +7,15 @@ import 'dart:async' as _i5;
 
 import 'package:flutter/material.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:nice_absence_manager_app/absences/data/absence_api.dart' as _i2;
-import 'package:nice_absence_manager_app/absences/data/absence_repository.dart'
+import 'package:nice_absence_manager_app/feature/absences/data/absence_api.dart'
+    as _i2;
+import 'package:nice_absence_manager_app/feature/absences/data/absence_repository.dart'
     as _i4;
-import 'package:nice_absence_manager_app/absences/data/model/absence.dart'
+import 'package:nice_absence_manager_app/feature/absences/data/model/absence.dart'
     as _i6;
-import 'package:nice_absence_manager_app/absences/data/model/member.dart'
+import 'package:nice_absence_manager_app/feature/absences/data/model/member.dart'
     as _i8;
-import 'package:nice_absence_manager_app/absences/data/model/paginated_response.dart'
+import 'package:nice_absence_manager_app/feature/absences/data/model/paginated_response.dart'
     as _i3;
 
 // ignore_for_file: type=lint

@@ -1,4 +1,5 @@
-import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
+
+import 'package:nice_absence_manager_app/feature/absences/ui/view_model/absence_list_item_model.dart';
 
 String mapStatusToString(AbsenceStatus status) {
   return switch (status) {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:nice_absence_manager_app/absences/data/absence_api.dart';
-import 'package:nice_absence_manager_app/absences/data/absence_repository.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/absence_api.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/absence_repository.dart';
 
 import 'absence_repository_test.mocks.dart';
 

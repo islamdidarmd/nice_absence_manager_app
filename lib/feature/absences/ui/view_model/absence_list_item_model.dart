@@ -1,5 +1,5 @@
-import 'package:nice_absence_manager_app/absences/data/model/absence.dart';
-import 'package:nice_absence_manager_app/absences/data/model/member.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/model/absence.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/model/member.dart';
 
 enum AbsenceStatus {
   requested,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
-import 'package:nice_absence_manager_app/absences/ui/widgets/absence_list_view.dart';
-import 'package:nice_absence_manager_app/absences/ui/widgets/error_view.dart';
-import 'package:nice_absence_manager_app/absences/ui/widgets/loading_view.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/cubit/absence_list_cubit.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/widgets/absence_list_view.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/widgets/error_view.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/widgets/loading_view.dart';
 
 class AbsenceListScreen extends StatelessWidget {
   const AbsenceListScreen({super.key});

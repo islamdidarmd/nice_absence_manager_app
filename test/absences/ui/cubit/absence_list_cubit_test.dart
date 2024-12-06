@@ -2,10 +2,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:nice_absence_manager_app/absences/data/absence_repository.dart';
-import 'package:nice_absence_manager_app/absences/data/model/member.dart';
-import 'package:nice_absence_manager_app/absences/data/model/paginated_response.dart';
-import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/absence_repository.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/model/member.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/model/paginated_response.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/cubit/absence_list_cubit.dart';
 
 import 'absence_list_cubit_test.mocks.dart';
 

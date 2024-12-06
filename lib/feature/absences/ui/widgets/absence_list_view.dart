@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/absence_list_item_model.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/type_filter.dart';
-import 'package:nice_absence_manager_app/absences/ui/widgets/heading_view.dart';
-import 'package:nice_absence_manager_app/absences/ui/widgets/list_content_view.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/view_model/absence_list_item_model.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/view_model/type_filter.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/widgets/heading_view.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/widgets/list_content_view.dart';
 
 class AbsenceListView extends StatelessWidget {
   const AbsenceListView({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nice_absence_manager_app/absences/data/absence_api.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/absence_api.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nice_absence_manager_app/absences/data/absence_api.dart';
-import 'package:nice_absence_manager_app/absences/data/model/absence.dart';
-import 'package:nice_absence_manager_app/absences/data/model/member.dart';
-import 'package:nice_absence_manager_app/absences/data/model/paginated_response.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/absence_api.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/model/absence.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/model/member.dart';
+import 'package:nice_absence_manager_app/feature/absences/data/model/paginated_response.dart';
 
 @injectable
 class AbsenceRepository {

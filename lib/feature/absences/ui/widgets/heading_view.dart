@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nice_absence_manager_app/absences/ui/cubit/absence_list_cubit.dart';
-import 'package:nice_absence_manager_app/absences/ui/mapper/filter_mapper.dart';
-import 'package:nice_absence_manager_app/absences/ui/view_model/type_filter.dart';
-import 'package:nice_absence_manager_app/absences/ui/widgets/filter_dialog.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/cubit/absence_list_cubit.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/mapper/filter_mapper.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/view_model/type_filter.dart';
+import 'package:nice_absence_manager_app/feature/absences/ui/widgets/filter_dialog.dart';
 
 class HeadingView extends StatelessWidget {
   const HeadingView({
