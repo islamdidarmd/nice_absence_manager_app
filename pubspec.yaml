@@ -7,10 +7,8 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
-  bloc_test: ^9.1.7
   cached_network_image: ^3.4.1
   dart_mappable: ^4.3.0
-  equatable: ^2.0.7
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
@@ -21,6 +19,7 @@ dependencies:
   share_plus: ^10.1.2
 
 dev_dependencies:
+  bloc_test: ^9.1.7
   build_runner: ^2.4.13
   dart_mappable_builder: ^4.3.0
   flutter_gen_runner: ^5.8.0
